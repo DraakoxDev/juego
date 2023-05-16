@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <title>Juego</title>
+</head>
+<body>
+    <div class="containerConfigs">
+        <span>Color del jugador Uno</span><br>
+        <input type="color" id="colorPlayerOne"><br>
+        <span>Color del jugador Dos</span><br>
+        <input type="color" id="colorPlayerTwo"><br>
+        <span>Color del Mapa</span><br>
+        <input type="color" id="colorMap">
+        <input type="button" value="Establecer" id="establecer">
+    </div>
+
+    <div class="game-container">
+        <div class="gameItem" id="0"></div>
+        <div class="gameItem" id="1"></div>
+        <div class="gameItem" id="2"></div>
+        <div class="gameItem" id="3"></div>
+        <div class="gameItem" id="4"></div>
+        <div class="gameItem" id="5"></div>
+        <div class="gameItem" id="6"></div>
+        <div class="gameItem" id="7"></div>
+        <div class="gameItem" id="8"></div>
+    </div>
+    <input type="button" id="replay" value="Jugar de nuevo">
+    <!-- APP JS -->
+    <script src="app.js"></script>
+</body>
+</html>
