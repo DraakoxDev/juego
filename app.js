@@ -28,7 +28,7 @@ let matriz = [
 ];
 
 replay.addEventListener("click", ()=>{
-    matriz = matriz = [
+    matriz = [
         [0,0,0],
         [0,0,0],
         [0,0,0]
