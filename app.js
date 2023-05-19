@@ -60,18 +60,22 @@ window.addEventListener('DOMContentLoaded', () => {
                     tiles.classList.add('active');
                 });
                 break;
-            } else if (index1 === playerTwoSymbol && index2 === playerTwoSymbol && index3 === playerTwoSymbol) {
+            } 
+            
+            if (index1 === playerTwoSymbol && index2 === playerTwoSymbol && index3 === playerTwoSymbol) {
                 announcer.innerHTML = `${playerTwoSymbol} Win the match`;
                 gameItem.forEach(function(tiles) {
                     tiles.classList.add('active');
                 });
                 break;
-            } else if(!board.includes('')){
+            } 
+            
+            if(!board.includes('')){
                 announcer.innerHTML = `Draw`;
                 gameItem.forEach(function(tiles) {
                     tiles.classList.add('active');
                 });
-                break;
+
             }    
         }
     }
