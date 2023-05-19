@@ -1,143 +1,144 @@
-// Board
-const allWindow = document.querySelectorAll(".gameItem");
-const window0 = document.getElementById("0");
-const window1 = document.getElementById("1");
-const window2 = document.getElementById("2");
-const window3 = document.getElementById("3");
-const window4 = document.getElementById("4");
-const window5 = document.getElementById("5");
-const window6 = document.getElementById("6");
-const window7 = document.getElementById("7");
-const window8 = document.getElementById("8");
+window.addEventListener('DOMContentLoaded', () => {
 
-// Buttons
-const setMapColor = document.getElementById("establecer");
-const replay = document.getElementById("replay");
+    const playerOne = document.getElementById("SymbolPlayerOne");
+    const playerTwo = document.getElementById("SymbolPlayerTwo");
+    const btn_changeSymbols = document.getElementById("btn-changeSymbols");
+    const gameContainer = document.getElementById("game-container");
+    const boardContainer = document.getElementById("boardContainer");
+    const gameItem = document.querySelectorAll(".gameItem");
+    const resetButton = document.getElementById("reset");
+    const announcer = document.createElement('span');
+    
+    let playerOneSymbol = 'X';
+    let playerTwoSymbol = 'O';
 
-// Color configs
-const playerOneColor = document.getElementById("colorPlayerOne");
-const playerTwoColor = document.getElementById("colorPlayerTwo");
-const mapColor = document.getElementById("colorMap");
+    announcer.innerHTML = `Start ${playerOneSymbol}`;
+    gameContainer.insertBefore(announcer, boardContainer);
 
-let turno = true;
+    let matriz = ['', '', '', '', '', '', '', '', ''];
+    let turno = true;
 
-let matriz = [
-    [0,0,0],
-    [0,0,0],
-    [0,0,0]
-];
+    let position;
+    let currentSymbol;
 
-replay.addEventListener("click", ()=>{
-    matriz = [
-        [0,0,0],
-        [0,0,0],
-        [0,0,0]
+    let cases = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [6, 4, 2]
     ];
 
-    allWindow.forEach(function(allWindow) {
-        allWindow.style.background = mapColor.value;
-      });
-});
+    const changeCurrentPlayer = () => {
 
-setMapColor.addEventListener("click",()=>{
-    allWindow.forEach(function(allWindow) {
-        allWindow.style.background = mapColor.value;
-      });
-});
+        let actualPlayer;
 
-window0.addEventListener("click",()=>{
-    pintarRellenar(window0,0,0);
-    verificarGanador();
-});
-
-window1.addEventListener("click",()=>{
-    pintarRellenar(window1,0,1);
-    verificarGanador();
-});
-
-window2.addEventListener("click",()=>{
-    pintarRellenar(window2,0,2);
-    verificarGanador();
-});
-
-window3.addEventListener("click",()=>{
-    pintarRellenar(window3,1,0);
-    verificarGanador();
-});
-
-window4.addEventListener("click",()=>{
-    pintarRellenar(window4,1,1);
-    verificarGanador();
-});
-
-window5.addEventListener("click",()=>{
-    pintarRellenar(window5,1,2);
-    verificarGanador();
-});
-
-window6.addEventListener("click",()=>{
-    pintarRellenar(window6,2,0);
-    verificarGanador();
-});
-
-window7.addEventListener("click",()=>{
-    pintarRellenar(window7,2,1);
-    verificarGanador();
-});
-
-window8.addEventListener("click",()=>{
-    pintarRellenar(window8,2,2);
-    verificarGanador();
-});
-
-function verificarGanador() {
-    if (matriz[0][0] == 1 & matriz[1][0] == 1 & matriz[2][0] == 1) {
-        console.log("El jugador uno a ganado");
-    } else if (matriz[0][0] == 1 & matriz[0][1] == 1 & matriz[0][2] == 1) {
-        console.log("El jugador uno a ganado");
-    } else if (matriz[0][2] == 1 & matriz[1][2] == 1 & matriz[2][2] == 1) {
-        console.log("El jugador uno a ganado");
-    } else if (matriz[2][0] == 1 & matriz[2][1] == 1 & matriz[2][2] == 1) {
-        console.log("El jugador uno a ganado");
-    } else if (matriz[1][0] == 1 & matriz[1][1] == 1 & matriz[1][2] == 1) {
-        console.log("El jugador uno a ganado");
-    } else if (matriz[0][1] == 1 & matriz[1][1] == 1 & matriz[2][1] == 1) {
-        console.log("El jugador uno a ganado");
-    } else if (matriz[2][0] == 1 & matriz[1][1] == 1 & matriz[0][2] == 1) {
-        console.log("El jugador uno a ganado");
-    } else if (matriz[0][0] == 1 & matriz[1][1] == 1 & matriz[2][2] == 1) {
-        console.log("El jugador uno a ganado");
+        if(turno){
+            actualPlayer = playerOneSymbol;
+            turno = false;
+            announcer.innerHTML = `it's the turn of ${playerTwoSymbol}`;
+        } else {
+            actualPlayer = playerTwoSymbol;
+            turno = true;
+            announcer.innerHTML = `it's the turn of ${playerOneSymbol}`;
+        }
+        return actualPlayer;
     }
+
+    const checkWinner = () => {
+        for (let i = 0; i < 8; i++) {
+            let check = cases[i];
+            const checkIndex1 = matriz[check[0]];
+            const checkIndex2 = matriz[check[1]];
+            const checkIndex3 = matriz[check[2]];
+
+            if (checkIndex1 === playerOneSymbol && checkIndex2 === playerOneSymbol && checkIndex3 === playerOneSymbol) {
+                announcer.innerHTML = `${playerOneSymbol} Win the match`;
+                gameItem.forEach(function(tiles) {
+                    tiles.classList.add('active');
+                });
+                break;
+            } else if (checkIndex1 === playerTwoSymbol && checkIndex2 === playerTwoSymbol && checkIndex3 === playerTwoSymbol) {
+                announcer.innerHTML = `${playerTwoSymbol} Win the match`;
+                gameItem.forEach(function(tiles) {
+                    tiles.classList.add('active');
+                });
+                break;
+            } else if(!matriz.includes('')){
+                announcer.innerHTML = `Draw`;
+                gameItem.forEach(function(tiles) {
+                    tiles.classList.add('active');
+                });
+            }    
+        }
+    }
+
+    boardContainer.addEventListener('click', (e) => {
+        
+        let tiles = e.target;
+
+        if (tiles && tiles.className != 'boardContainer') {
+
+            if (!tiles.classList.contains('active')) {
+                //Obtenemos el id del elemento para rellenar la matriz
+                position = e.explicitOriginalTarget.id;
+                //Se cambia el turno y obtenemos el simbolo correspondiente
+                currentSymbol = changeCurrentPlayer();
+                tiles.innerHTML = currentSymbol;
+                matriz[position] = currentSymbol;
+                tiles.classList.add('active');
+                checkWinner();
+            }
+        }
+    });
+
     
-    if (matriz[0][0] == 2 & matriz[1][0] == 2 & matriz[2][0] == 2) {
-        console.log("El jugador dos a ganado");
-    } else if (matriz[0][0] == 2 & matriz[0][1] == 2 & matriz[0][2] == 2) {
-        console.log("El jugador dos a ganado");
-    } else if (matriz[0][2] == 2 & matriz[1][2] == 2 & matriz[2][2] == 2) {
-        console.log("El jugador dos a ganado");
-    } else if (matriz[2][0] == 2 & matriz[2][1] == 2 & matriz[2][2] == 2) {
-        console.log("El jugador dos a ganado");
-    } else if (matriz[1][0] == 2 & matriz[1][1] == 2 & matriz[1][2] == 2) {
-        console.log("El jugador dos a ganado");
-    } else if (matriz[0][1] == 2 & matriz[1][1] == 2 & matriz[2][1] == 2) {
-        console.log("El jugador dos a ganado");
-    } else if (matriz[2][0] == 2 & matriz[1][1] == 2 & matriz[0][2] == 2) {
-        console.log("El jugador dos a ganado");
-    } else if (matriz[0][0] == 2 & matriz[1][1] == 2 & matriz[2][2] == 2) {
-        console.log("El jugador dos a ganado");
-    } 
-}
+    btn_changeSymbols.addEventListener('click', () => {
 
-function pintarRellenar(ventana,x,y) {
-    if(turno){
-        matriz[x][y] = 1;
-        ventana.style.background = playerOneColor.value;
-        turno = false;
-    } else {
-        matriz[x][y] = 2;
-        ventana.style.background = playerTwoColor.value;
+        if(matriz.includes(playerOneSymbol)){
+
+            let check = confirm("Si cambias de simbolos en medio de una partida esta se reseteara ¿seguro que quieres continuar?");
+            check ? changeSymbols() : false;
+                
+        } else {
+
+            changeSymbols();
+            
+        }
+    });
+
+
+    resetButton.addEventListener('click', () => {
+        restartGame();
+    });
+
+    function restartGame() {
+        matriz = ['', '', '', '', '', '', '', '', ''];
         turno = true;
+        announcer.innerHTML = `Start ${playerOneSymbol}`;
+    
+        gameItem.forEach(function(tiles) {
+            tiles.innerHTML = '';
+            tiles.classList.remove('active');
+        });
     }
-}
+
+    function changeSymbols() {
+        playerOneSymbol = playerOne.value.toUpperCase();
+        playerTwoSymbol = playerTwo.value.toUpperCase();
+
+        if (playerOneSymbol === '' || playerTwoSymbol === '') {
+            playerOneSymbol = 'X';
+            playerTwoSymbol = 'O';
+        }
+
+        announcer.innerHTML = `Start ${playerOneSymbol}`;
+        restartGame();
+    }
+});
+
 
 
