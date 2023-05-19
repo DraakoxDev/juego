@@ -15,13 +15,12 @@ window.addEventListener('DOMContentLoaded', () => {
     announcer.innerHTML = `Start ${playerOneSymbol}`;
     gameContainer.insertBefore(announcer, boardContainer);
 
-    let matriz = ['', '', '', '', '', '', '', '', ''];
+    let board = ['', '', '', '', '', '', '', '', ''];
     let turno = true;
 
-    let position;
     let currentSymbol;
 
-    let cases = [
+    const cases = [
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8],
@@ -50,28 +49,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const checkWinner = () => {
         for (let i = 0; i < 8; i++) {
-            let check = cases[i];
-            const checkIndex1 = matriz[check[0]];
-            const checkIndex2 = matriz[check[1]];
-            const checkIndex3 = matriz[check[2]];
+            let checkCases = cases[i];
+            const index1 = board[checkCases[0]];
+            const index2 = board[checkCases[1]];
+            const index3 = board[checkCases[2]];
 
-            if (checkIndex1 === playerOneSymbol && checkIndex2 === playerOneSymbol && checkIndex3 === playerOneSymbol) {
+            if (index1 === playerOneSymbol && index2 === playerOneSymbol && index3 === playerOneSymbol) {
                 announcer.innerHTML = `${playerOneSymbol} Win the match`;
                 gameItem.forEach(function(tiles) {
                     tiles.classList.add('active');
                 });
                 break;
-            } else if (checkIndex1 === playerTwoSymbol && checkIndex2 === playerTwoSymbol && checkIndex3 === playerTwoSymbol) {
+            } else if (index1 === playerTwoSymbol && index2 === playerTwoSymbol && index3 === playerTwoSymbol) {
                 announcer.innerHTML = `${playerTwoSymbol} Win the match`;
                 gameItem.forEach(function(tiles) {
                     tiles.classList.add('active');
                 });
                 break;
-            } else if(!matriz.includes('')){
+            } else if(!board.includes('')){
                 announcer.innerHTML = `Draw`;
                 gameItem.forEach(function(tiles) {
                     tiles.classList.add('active');
                 });
+                break;
             }    
         }
     }
@@ -83,12 +83,12 @@ window.addEventListener('DOMContentLoaded', () => {
         if (tiles && tiles.className != 'boardContainer') {
 
             if (!tiles.classList.contains('active')) {
-                //Obtenemos el id del elemento para rellenar la matriz
-                position = e.explicitOriginalTarget.id;
-                //Se cambia el turno y obtenemos el simbolo correspondiente
+                //Obtenemos el id del elemento para rellenar la board
+                const tileId = e.explicitOriginalTarget.id;
+                //Se cambia el turno y el simbolo correspondiente
                 currentSymbol = changeCurrentPlayer();
                 tiles.innerHTML = currentSymbol;
-                matriz[position] = currentSymbol;
+                board[tileId] = currentSymbol;
                 tiles.classList.add('active');
                 checkWinner();
             }
@@ -98,25 +98,24 @@ window.addEventListener('DOMContentLoaded', () => {
     
     btn_changeSymbols.addEventListener('click', () => {
 
-        if(matriz.includes(playerOneSymbol)){
+        if(board.includes(playerOneSymbol)){
 
-            let check = confirm("Si cambias de simbolos en medio de una partida esta se reseteara ¿seguro que quieres continuar?");
-            check ? changeSymbols() : false;
+            const confirmMessage = "Si cambias de simbolos en medio de una partida esta se reseteara ¿seguro que quieres continuar?";
+            const check = confirm(confirmMessage);
+
+            if (check) {
+                changeSymbols();
+            }
                 
         } else {
-
             changeSymbols();
-            
         }
     });
 
-
-    resetButton.addEventListener('click', () => {
-        restartGame();
-    });
+    resetButton.addEventListener('click', restartGame);
 
     function restartGame() {
-        matriz = ['', '', '', '', '', '', '', '', ''];
+        board = ['', '', '', '', '', '', '', '', ''];
         turno = true;
         announcer.innerHTML = `Start ${playerOneSymbol}`;
     
